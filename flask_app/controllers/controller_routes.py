@@ -4,9 +4,6 @@ from datetime import datetime
 import random
 import json
 
-from flask_app.models.model_transaction import Transaction
-
-
 @app.route('/')
 def index():
     return render_template("index.html")
