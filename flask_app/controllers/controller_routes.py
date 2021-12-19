@@ -8,6 +8,10 @@ from flask_app.models.model_transaction import Transaction
 
 @app.route('/')
 def index():
+    return render_template("login.html")
+
+@app.route('/test')
+def test():
     return render_template("index.html")
 
 @app.route('/add/txn')

@@ -19,12 +19,22 @@
     <h1 class="visitor-title">BlokX</h1>
     <div class="login-reg-box mt-3">
         <h3 class="login-reg-box-title">Login</h3>
-        <form action="" method="post">
-            <input type="text" name="email" id="email" placeholder="Email" class="form-control border-blue mt-3">
+        <form action="/users/login" method="post">
+            <input type="email" name="email" id="email" placeholder="Email" class="form-control border-blue mt-3">
+            {% for message in get_flashed_messages(category_filter=["err_email"]) %}
+                {% if message: %}
+                    <p class="alert alert-danger">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
             <input type="password" name="password" id="password" placeholder="Password" class="form-control border-blue mt-3">
+            {% for message in get_flashed_messages(category_filter=["err_login"]) %}
+                {% if message: %}
+                    <p class="alert alert-danger">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
             <input type="submit" value="Log In" class="btn btn-warning border border-2 border-dark btn-shadow col-4 offset-4 mt-3">
         </form>
-        <p class="text-center mt-3" >Don't have an account? <a href="">Register</a></p>
+        <p class="text-center mt-3" >Don't have an account? <a href="/register">Register</a></p>
     </div>
 </body>
 </html>
