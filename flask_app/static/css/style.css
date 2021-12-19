@@ -1,0 +1,150 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.visitor-title{
+    width: 100%;
+    height: fit-content;
+    margin-top: 40px;
+    text-align: center;
+    font-size: 75px;
+}
+
+.login-reg-box{
+    width: 350px;
+    height: fit-content;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 20px;
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.35);
+}
+
+.login-reg-box-title{
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    font-size: 35px;
+}
+
+.nav-pane{
+    width: 300px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid black;
+}
+
+.nav-title{
+    width: 260px;
+    height: fit-content;
+    margin: 20px auto;
+    text-align: center;
+    font-size: 75px;
+    border-bottom: 1px solid black;
+}
+
+.nav-welcome{
+    width: 300px;
+    height: fit-content;
+    text-align: center;
+    font-size: 35px;
+}
+
+.nav-monogram{
+    width: 150px;
+    height: 150px;
+    font-size: 60px;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 50%;
+    padding-top: 25px;
+}
+
+.nav-email{
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    color: rgb(20, 120, 220);
+    font-size: 20px;
+}
+
+.nav-balance-label{
+    width: 100%;
+    text-align: left;
+    padding: 0 35px;
+    font-size: 18px;
+}
+
+.nav-balance-amt{
+    font-size: 22px;
+}
+
+.nav-link-list{
+    width: 100%;
+    list-style-type: none;
+    text-align: left;
+    padding: 0 35px;
+}
+
+.nav-link{
+    text-decoration: none;
+    color: black;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-link:hover{
+    color: black;
+}
+
+.send-link{
+    font-size: 25px;
+}
+
+.content{
+    width: 100%;
+}
+
+.welcome-blokx{
+    font-size: 75px;
+}
+
+.transaction-history{
+    height: 100vh;
+}
+
+.transaction-history-title{
+    background-color: white;
+    height: 60px;
+    width: 100%;
+}
+
+.overflow-y{
+    overflow-y: auto;
+}
+
+.active{
+    color: rgb(20,120,220);
+}
+
+.border-blue{
+    border: 2px solid rgb(20, 120, 220);
+}
+
+.btn-shadow{
+    box-shadow: 4px 4px 4px rgba(0,0,0,0.35);
+}
+
+.mt-100{
+    margin-top: 100px;
+}
+
+.mt-200{
+    margin-top: 200px;
+}
