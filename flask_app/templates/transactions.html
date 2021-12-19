@@ -19,17 +19,17 @@
 <body class="overflow-hidden">
     <div class="d-flex">
         <aside class="nav-pane">
-            <h2 class="nav-title">BlokX</h2>
-            <h3 class="nav-welcome">Hello, Thomas!</h3>
-            <p class="nav-monogram mt-3">TA</p>
-            <p class="nav-email">arndtt42@gmail.com</p>
-            <p class="nav-balance-label mt-3">Your Balance: <span class="nav-balance-amt">$0.00</span></p>
+            <h2 class="nav-title"><a href="/dashboard" class="nav-link">BlokX</a></h2>
+            <h3 class="nav-welcome">Hello, {{ user.first_name }}!</h3>
+            <p class="nav-monogram mt-3">{{ user.first_name[0] }}{{ user.last_name[0] }}</p>
+            <p class="nav-email">{{ user.email }}</p>
+            <p class="nav-balance-label mt-3">Your Balance: <span class="nav-balance-amt">${{ balance }}</span></p>
             <ul class="nav-link-list">
-                <li><a href="" class="nav-link send-link">Send Money</a></li>
-                <li><a href="" class="nav-link mt-3">Deposit</a></li>
-                <li><a href="" class="nav-link mt-3">Transaction History</a></li>
-                <li><a href="" class="nav-link mt-3">Account Settings</a></li>
-                <li><a href="" class="nav-link mt-5">Logout</a></li>
+                <li><a href="/send" class="nav-link send-link">Send Money</a></li>
+                <li><a href="/deposit" class="nav-link mt-3">Deposit</a></li>
+                <li><a href="/history" class="nav-link mt-3">Transaction History</a></li>
+                <li><a href="/settings" class="nav-link mt-3">Account Settings</a></li>
+                <li><a href="/users/logout" class="nav-link mt-5">Logout</a></li>
             </ul>
         </aside>
         <main class="content d-flex flex-column align-items-center">

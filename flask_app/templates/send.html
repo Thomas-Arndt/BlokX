@@ -8,36 +8,34 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- My CSS -->
-    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <!-- Quicksand Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
     <div class="d-flex">
         <aside class="nav-pane">
-            <h2 class="nav-title">BlokX</h2>
-            <h3 class="nav-welcome">Hello, Thomas!</h3>
-            <p class="nav-monogram mt-3">TA</p>
-            <p class="nav-email">arndtt42@gmail.com</p>
-            <p class="nav-balance-label mt-3">Your Balance: <span class="nav-balance-amt">$0.00</span></p>
+            <h2 class="nav-title"><a href="/dashboard" class="nav-link">BlokX</a></h2>
+            <h3 class="nav-welcome">Hello, {{ user.first_name }}!</h3>
+            <p class="nav-monogram mt-3">{{ user.first_name[0] }}{{ user.last_name[0] }}</p>
+            <p class="nav-email">{{ user.email }}</p>
+            <p class="nav-balance-label mt-3">Your Balance: <span class="nav-balance-amt">${{ balance }}</span></p>
             <ul class="nav-link-list">
-                <li><a href="" class="nav-link send-link">Send Money</a></li>
-                <li><a href="" class="nav-link mt-3">Deposit</a></li>
-                <li><a href="" class="nav-link mt-3">Transaction History</a></li>
-                <li><a href="" class="nav-link mt-3">Account Settings</a></li>
-                <li><a href="" class="nav-link mt-5">Logout</a></li>
+                <li><a href="/send" class="nav-link send-link">Send Money</a></li>
+                <li><a href="/deposit" class="nav-link mt-3">Deposit</a></li>
+                <li><a href="/history" class="nav-link mt-3">Transaction History</a></li>
+                <li><a href="/settings" class="nav-link mt-3">Account Settings</a></li>
+                <li><a href="/users/logout" class="nav-link mt-5">Logout</a></li>
             </ul>
         </aside>
         <main class="content d-flex flex-column align-items-center justify-content-center">
             <h2>Send Money!</h2>
-            <form action="" method="post">
-                <input type="number" name="amount" id="amount" placeholder="0.00" class="form-control border border-dark mt-4">
-                <input type="text" name="recipient" id="recipient" placeholder="Recipient's Email" class="form-control border border-dark mt-4">
-                <textarea name="recipient" id="recipient" cols="25" rows="4" placeholder="Message (Max 120 characters)"" class="form-control border border-dark mt-4"></textarea>
+            <form action="/transactions/create" method="post">
+                <input type="number" name="amount" id="amount" placeholder="0.00" step="0.01" class="form-control border border-dark mt-4">
+                <input type="email" name="recipient" id="recipient" placeholder="Recipient's Email" class="form-control border border-dark mt-4">
+                <textarea name="message" id="message" cols="25" rows="4" placeholder="Message (Max 120 characters)"" class="form-control border border-dark mt-4"></textarea>
                 <input type="submit" value="Send" class="btn btn-warning btn-shadow border-2 border-dark col-8 offset-2 mt-4">
             </form>
         </main>
