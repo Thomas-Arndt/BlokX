@@ -12,7 +12,7 @@ class Miner:
         self.pending_txns=[]
         print("Miner instantiated!")
 
-        self.thread=threading.Thread(target=self.mine, args=(5,))
+        self.thread=threading.Thread(target=self.mine, args=(7,))
         self.thread.daemon=True
         self.thread.start()
         

@@ -16,8 +16,8 @@ class MerkleTree:
     
     def merkle_root(self):
         if len(self.data_duplicate) <= 1:
-            self.data_duplicate.append(Transaction("user_1", "user_2", random.randint(0, 1000), "This is a test transaction."))
-            self.data_duplicate.append(Transaction("user_2", "user_1", random.randint(0, 1000), "This is a test transaction."))
+            self.data_duplicate.append(Transaction({"sender":"user_1", "receiver":"user_2", "amount":random.randint(0, 1000), "message":"This is a test transaction."}))
+            self.data_duplicate.append(Transaction({"sender":"user_2", "receiver":"user_1", "amount":random.randint(0, 1000), "message":"This is a test transaction."}))
         while len(self.data_duplicate)>1:
             if len(self.data_duplicate)%2 != 0:
                 self.data_duplicate.append(self.data_duplicate[-1])
