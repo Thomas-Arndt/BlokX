@@ -4,19 +4,24 @@ from datetime import datetime
 import random
 import json
 
+from flask_app.models.model_transaction import Transaction
+
 @app.route('/')
 def index():
     return render_template("index.html")
 
 @app.route('/add/txn')
 def add_txn():
-    txn={
-            "sender": "A",
-            "receiver": "B",
-            "amount": random.randint(0, 1000),
-            "timestamp": str(datetime.now())
-            }
-    MINER.add_new_transaction(json.dumps(txn))
+    # txn={
+    #         "sender": "A",
+    #         "receiver": "B",
+    #         "amount": random.randint(0, 1000),
+    #         "timestamp": str(datetime.now())
+    #         }
+    user_1=f"user{random.randint(0,100)}@email.com"
+    user_2=f"user{random.randint(0,100)}@email.com"
+    txn=Transaction(user_1, user_2, random.randint(0, 1000), "This is a test transaction.")
+    MINER.add_new_transaction(txn)
     return redirect('/')
 
 
