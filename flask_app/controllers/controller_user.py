@@ -1,9 +1,11 @@
-from flask_app import app
+from flask_app import app, MINER
 from flask import render_template, redirect, session, request, flash
 from flask_bcrypt import Bcrypt
 
 from flask_app.models.model_user import User
 from flask_app.models.model_transaction import Transaction
+
+from flask_app.models.model_miner import CHAIN
 
 bcrypt=Bcrypt(app)
 
@@ -56,42 +58,53 @@ def users_create():
 @app.route('/dashboard')
 def users_dashboard():
     user=User.get_one({"id":session['uuid']})
-    sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    balance=received_amount['received_amount']-sent_amount['sent_amount']
+    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
+    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
+    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("welcome.html", user=user, balance=balance)
 
 @app.route('/send')
 def users_send():
     user=User.get_one({"id":session['uuid']})
-    sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    balance=received_amount['received_amount']-sent_amount['sent_amount']
+    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
+    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
+    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("send.html", user=user, balance=balance)
 
 @app.route('/deposit')
 def users_deposit():
     user=User.get_one({"id":session['uuid']})
-    sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    print(received_amount['received_amount'])
-    balance=received_amount['received_amount']-sent_amount['sent_amount']
+    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
+    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
+    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("deposit.html", user=user, balance=balance)
 
 @app.route('/history')
 def users_history():
     user=User.get_one({"id":session['uuid']})
-    sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    balance=received_amount['received_amount']-sent_amount['sent_amount']
-    return render_template("transactions.html", user=user, balance=balance)
+    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    verified_txns=CHAIN.get_transactions_by_user(user.email)
+    print(verified_txns[0].sender)
+    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
+    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
+    # balance=received_amount['received_amount']-sent_amount['sent_amount']
+    return render_template("transactions.html", user=user, balance=balance, verified_txns=verified_txns)
 
 @app.route('/settings')
 def users_settings():
     user=User.get_one({"id":session['uuid']})
-    sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    balance=received_amount['received_amount']-sent_amount['sent_amount']
+    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
+    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
+    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("account_settings.html", user=user, balance=balance)
 
 @app.route('/users/<int:id>/update', methods=['POST'])

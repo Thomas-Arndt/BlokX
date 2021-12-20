@@ -4,6 +4,8 @@ from flask import render_template, redirect, session, request, flash
 from flask_app.models.model_transaction import Transaction
 from flask_app.models.model_user import User
 
+from flask_app.models.model_miner import CHAIN
+
 
 @app.route('/transactions/new')
 def transactions_new():
@@ -11,35 +13,45 @@ def transactions_new():
 
 @app.route('/transactions/create', methods=['POST'])
 def transactions_create():
-    print(request.form)
+    # print(request.form)
     receiver=User.get_user_by_email({"email": request.form['recipient']})
     sender=User.get_one({"id":session['uuid']})
-    data={
-        "sender_id":session['uuid'],
-        "receiver_id":receiver.id,
-        "amount":request.form['amount'],
-        "message":request.form['message']
-    }
-    transaction=Transaction.create_transaction(data)
+    # data={
+    #     "sender_id":session['uuid'],
+    #     "receiver_id":receiver.id,
+    #     "amount":request.form['amount'],
+    #     "message":request.form['message']
+    # }
+    # transaction=Transaction.create_transaction(data)
     data={
         "sender":sender.email,
         "receiver":receiver.email,
         "amount":request.form['amount'],
         "message":request.form['message']
     }
+    if not Transaction.validate_transaction(data):
+        return redirect('/send')
     MINER.add_new_transaction(Transaction(data))
     return redirect('/send')
 
 @app.route('/deposit/create', methods=['POST'])
 def deposit_create():
     print(request.form)
+    # data={
+    #     "sender_id":1,
+    #     "receiver_id":session['uuid'],
+    #     "amount":request.form['amount'],
+    #     "message":f"Deposit from {request.form['bank_account']} Account"
+    # }
+    # transaction=Transaction.create_deposit(data)
+    receiver=User.get_one({"id":session['uuid']})
     data={
-        "sender_id":1,
-        "receiver_id":session['uuid'],
+        "sender":"Deposit",
+        "receiver":receiver.email,
         "amount":request.form['amount'],
-        "message":f"Deposit from {request.form['bank_account']} Account"
+        "message":request.form['bank_account']
     }
-    transaction=Transaction.create_deposit(data)
+    MINER.add_new_transaction(Transaction(data))
     return redirect('/deposit')
 
 @app.route('/transactions/<int:id>')

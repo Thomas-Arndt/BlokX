@@ -1,7 +1,12 @@
+from flask_app import MINER
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from datetime import datetime
 import re
+
+from flask_app.models.model_miner import CHAIN
+from flask_app.models.model_user import User
+
 
 DATABASE='blokx_schema'
 
@@ -91,3 +96,17 @@ class Transaction:
     def delete_one(cls, data:dict) -> None:
         query="DELETE FROM transactions WHERE id=%(id)s;"
         return connectToMySQL(DATABASE).query_db(query, data)
+
+
+    @staticmethod
+    def validate_transaction(data):
+        is_valid=True
+        receiver=User.get_user_by_email({"email": request.form['recipient']})
+        sender=User.get_one({"id":session['uuid']})
+
+        pending_sent_amount=MINER.get_pending_sent_amount(sender.email)
+        balance=CHAIN.get_balance_by_user(sender.email)-pending_sent_amount
+        if balance >= float(data['amount']):
+            flash("You do not have that much to send.", "err_amount")
+            is_valid=False
+        return is_valid

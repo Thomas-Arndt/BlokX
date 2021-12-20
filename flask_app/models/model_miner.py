@@ -12,7 +12,7 @@ class Miner:
         self.pending_txns=[]
         print("Miner instantiated!")
 
-        self.thread=threading.Thread(target=self.mine, args=(7,))
+        self.thread=threading.Thread(target=self.mine, args=(5,))
         self.thread.daemon=True
         self.thread.start()
         
@@ -51,6 +51,19 @@ class Miner:
         print("********************************")
         self.block.merkle_root=MerkleTree(self.pending_txns).merkle_root()
         self.block.nonce=0
+
+    def get_pending_sent_amount(self, user=None):
+        sent_amount=0
+        if user == None:
+            return None
+        else:
+            txns_sender=[txn.amount for txn in self.pending_txns if txn.sender == user]
+            # print(txns_sender)
+            for txn in txns_sender:
+                if txn:
+                    sent_amount+=float(txn)
+        # print(sent_amount)
+        return sent_amount
 
 
 
