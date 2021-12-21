@@ -35,8 +35,10 @@
         <main class="content d-flex flex-column align-items-center">
             <h2 class="text-center transaction-history-title py-3">Transaction History</h2>
             <div class="transaction-history overflow-y px-5">
+                {% if has_pending_txns %}
+                <h5 class="text-center text-danger text-decoration-underline">Unconfirmed Transations</h5>
+                {% endif %}
                 {% if pending_txns %}    
-                    <h5 class="text-center text-danger text-decoration-underline">Unconfirmed Transations</h5>
                     {% for txn in pending_txns %}
                         {% if txn.sender == "Deposit" and txn.receiver == user.email%}
                             <div class="transaction-block">

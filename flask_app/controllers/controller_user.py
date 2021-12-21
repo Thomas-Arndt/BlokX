@@ -89,7 +89,11 @@ def users_history():
     verified_txns.reverse()
     pending_txns=MINER.pending_txns
     pending_txns.reverse()
-    return render_template("transactions.html", user=user, balance=balance, verified_txns=verified_txns, pending_txns=pending_txns)
+    has_pending_txns = False
+    for txn in pending_txns:
+        if txn.sender == user.email or txn.receiver == user.email:
+            has_pending_txns=True
+    return render_template("transactions.html", user=user, balance=balance, verified_txns=verified_txns, pending_txns=pending_txns, has_pending_txns=has_pending_txns)
 
 @app.route('/settings')
 def users_settings():
