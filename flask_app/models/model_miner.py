@@ -18,12 +18,12 @@ class Miner:
             # create txn backup
             self.pending_txns=[]
             frozen=jsonpickle.encode(self.pending_txns)
-            Miner.create_txn_backup(frozen)
+            backup_id=Miner.create_txn_backup(frozen)
+            query="UPDATE pending_transactions_backup SET id=1 WHERE id=%(id)s;"
+            connectToMySQL(DATABASE).query_db(query, {"id":backup_id})
         else:
             # Get txn backup
             frozen=Miner.get_txn_backup()
-            # print("FROZEN*******************")
-            # print(frozen)
             self.pending_txns=jsonpickle.decode(frozen['txn'])
 
         print("Miner instantiated!")

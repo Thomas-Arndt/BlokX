@@ -60,6 +60,7 @@ def users_dashboard():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    balance="{:.2f}".format(balance)
     return render_template("welcome.html", user=user, balance=balance)
 
 @app.route('/send')
@@ -67,6 +68,7 @@ def users_send():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    balance="{:.2f}".format(balance)
     return render_template("send.html", user=user, balance=balance)
 
 @app.route('/deposit')
@@ -74,6 +76,7 @@ def users_deposit():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    balance="{:.2f}".format(balance)
     return render_template("deposit.html", user=user, balance=balance)
 
 @app.route('/history')
@@ -81,6 +84,7 @@ def users_history():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    balance="{:.2f}".format(balance)
     verified_txns=CHAIN.get_transactions_by_user(user.email)
     verified_txns.reverse()
     pending_txns=MINER.pending_txns
@@ -92,6 +96,7 @@ def users_settings():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
+    balance="{:.2f}".format(balance)
     return render_template("account_settings.html", user=user, balance=balance)
 
 @app.route('/users/update/password', methods=['POST'])

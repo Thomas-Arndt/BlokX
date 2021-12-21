@@ -38,7 +38,7 @@
                 {% if pending_txns %}    
                     <h5 class="text-center text-danger text-decoration-underline">Unconfirmed Transations</h5>
                     {% for txn in pending_txns %}
-                        {% if txn.sender == "Deposit" %}
+                        {% if txn.sender == "Deposit" and txn.receiver == user.email%}
                             <div class="transaction-block">
                                 <p class="mb-1"><strong>You</strong> deposited <strong>${{ txn.amount }}</strong> from <strong>{{ txn.message }}</strong>.</p>
                                 <p class="transaction-date">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
