@@ -125,6 +125,17 @@
     width: 100%;
 }
 
+.transaction-block{
+    max-width: 500px;
+    padding-top:15px;
+    border-bottom: 1px solid black;
+}
+
+.transaction-date{
+    font-size: 14px;
+    color: rgb(70,70,70)
+}
+
 .overflow-y{
     overflow-y: auto;
 }

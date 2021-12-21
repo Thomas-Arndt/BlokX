@@ -36,10 +36,24 @@
             <h2 class="text-center transaction-history-title py-3">Transaction History</h2>
             <div class="transaction-history overflow-y px-5">
                 {% for txn in verified_txns %}
-                    <p>{{ txn.sender }}</p>
-                    <p>{{ txn.receiver }}</p>
-                    <p>{{ txn.amount }}</p>
-                    <p>{{ txn.message }}</p>
+                    {% if txn.sender == "Deposit" %}
+                        <div class="transaction-block">
+                            <p class="mb-1"><strong>You</strong> deposited <strong>${{ txn.amount }}</strong> from <strong>{{ txn.message }}</strong>.</p>
+                            <p class="transaction-date">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                        </div>
+                    {% elif txn.sender == user.email %}
+                        <div class="transaction-block">
+                            <p class="mb-1"><strong>You</strong> sent <strong>${{ txn.amount }}</strong> to <strong>{{ txn.receiver }}</strong>.</p>
+                            <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                            <p>{{ txn.message }}</p>
+                        </div>        
+                    {% elif txn.receiver == user.email %}
+                        <div class="transaction-block">
+                            <p class="mb-1"><strong>{{ txn.sender }}</strong> sent <strong>You</strong> <strong>${{ txn.amount }}</strong>.</p>
+                            <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                            <p>{{ txn.message }}</p>
+                        </div>        
+                    {% endif %}
                 {% endfor %}
             </div>
         </main>
