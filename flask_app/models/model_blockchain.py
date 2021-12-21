@@ -45,6 +45,13 @@ class Blockchain:
                         all_txns_by_user.append(txn)
         return all_txns_by_user
 
+    # C
+    @classmethod
+    def create_backup(cls, chain):
+        query="INSERT INTO blockchain_backup (blockchain) VALUES (%(chain)s);"
+        return connectToMySQL(DATABASE).query_db(query, {"chain":chain})
+    
+    # R
     @classmethod
     def get_backup(cls):
         query="SELECT * FROM blockchain_backup;"
@@ -52,12 +59,8 @@ class Blockchain:
         if results:
             return results[0]
         return False
-
-    @classmethod
-    def create_backup(cls, chain):
-        query="INSERT INTO blockchain_backup (blockchain) VALUES (%(chain)s);"
-        return connectToMySQL(DATABASE).query_db(query, {"chain":chain})
     
+    # U
     @classmethod
     def update_backup(cls, data):
         query="UPDATE blockchain_backup SET blockchain=%(blockchain)s WHERE id=3;"
