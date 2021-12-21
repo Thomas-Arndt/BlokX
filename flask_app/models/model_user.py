@@ -58,6 +58,11 @@ class User:
     def update_one(cls, data:dict) -> None:
         query="UPDATE users SET first_name=%(first_name)s, last_name=%(last_name)s, email=%(email)s, password=%(password)s WHERE id=%(id)s;"
         return connectToMySQL(DATABASE).query_db(query, data)
+    
+    @classmethod
+    def update_user_password(cls, data:dict) -> None:
+        query="UPDATE users SET password=%(password)s WHERE id=%(id)s;"
+        return connectToMySQL(DATABASE).query_db(query, data)
 
     # D
     @classmethod
@@ -141,4 +146,32 @@ class User:
             is_valid=False
 
 
+        return is_valid
+    
+    @staticmethod
+    def validate_password_change(data):
+        is_valid=True
+        # Check Old Password Field
+        if not data['old_password']:
+            flash("Please provide your current password.", "err_old_password")
+            is_valid=False
+        
+        # Check New Password Field
+        if not data['new_password']:
+            flash("Please enter a password.", "err_new_password")
+            is_valid=False
+        
+        elif not PASSWORD_REGEX.match(data['new_password']):
+            flash("Password must be at least 8 letters, and must include at least one lowercase letter, one uppercase letter, and one number.", "err_new_password")
+            is_valid=False
+
+        # Check Confirm Password Field
+        if not data['password_confirm']:
+            flash("Please retype your password.", "err_password_confirm")
+            is_valid=False
+
+        elif data['new_password'] != data['password_confirm']:
+            flash("Passwords do not match.", "err_password_confirm")
+            is_valid=False
+        
         return is_valid

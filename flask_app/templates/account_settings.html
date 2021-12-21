@@ -36,11 +36,31 @@
                 <input type="email" name="email" id="email" placeholder="new@email.com" class="form-control border border-dark mt-4">
                 <input type="submit" value="Change Email" class="btn btn-warning btn-shadow border-2 border-dark col-8 offset-2 mt-4">
             </form> -->
-            <form action="" method="post">
+            <form action="/users/update/password" method="post">
                 <input type="password" name="old_password" id="old_password" placeholder="Old Password" class="form-control border border-dark mt-5">
+                {% for message in get_flashed_messages(category_filter=["err_old_password"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
                 <input type="password" name="new_password" id="new_password" placeholder="New Password" class="form-control border border-dark mt-4">
+                {% for message in get_flashed_messages(category_filter=["err_new_password"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
                 <input type="password" name="password_confirm" id="password_confirm" placeholder="Retype Password" class="form-control border border-dark mt-4">
+                {% for message in get_flashed_messages(category_filter=["err_password_confirm"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
                 <input type="submit" value="Change Password" class="btn btn-warning btn-shadow border-2 border-dark col-10 offset-1 mt-4">
+                {% for message in get_flashed_messages(category_filter=["msg_password_updated"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
             </form>
         </main>
     </div>

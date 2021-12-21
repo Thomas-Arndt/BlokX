@@ -60,9 +60,6 @@ def users_dashboard():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
-    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("welcome.html", user=user, balance=balance)
 
 @app.route('/send')
@@ -70,9 +67,6 @@ def users_send():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
-    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("send.html", user=user, balance=balance)
 
 @app.route('/deposit')
@@ -80,9 +74,6 @@ def users_deposit():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
-    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("deposit.html", user=user, balance=balance)
 
 @app.route('/history')
@@ -94,11 +85,6 @@ def users_history():
     verified_txns.reverse()
     pending_txns=MINER.pending_txns
     pending_txns.reverse()
-    # print(verified_txns[0])
-    # print(MINER.pending_txns)
-    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("transactions.html", user=user, balance=balance, verified_txns=verified_txns, pending_txns=pending_txns)
 
 @app.route('/settings')
@@ -106,14 +92,33 @@ def users_settings():
     user=User.get_one({"id":session['uuid']})
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
-    # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
-    # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
-    # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("account_settings.html", user=user, balance=balance)
 
 @app.route('/users/update/password', methods=['POST'])
-def users_update():
-    return redirect('/')
+def users_update_password():
+    print(request.form)
+    data={
+        **request.form
+    }
+    if not User.validate_password_change(data):
+        return redirect('/settings')
+    
+    user_in_db=User.get_one({"id":session['uuid']})
+    
+    if not bcrypt.check_password_hash(user_in_db.password, data['old_password']):
+        flash("Incorrect password.", "err_old_password")
+        return redirect('/settings')
+    
+    password_hash = bcrypt.generate_password_hash(request.form['new_password'])
+
+    data = {
+        "id":session['uuid'],
+        "password": password_hash
+    }
+
+    User.update_user_password(data)
+    flash("Password Updated!", "msg_password_updated")
+    return redirect('/settings')
 
 # @app.route('/users/<int:id>/delete')
 # def users_delete(id):
