@@ -1,10 +1,14 @@
-import threading
-from datetime import datetime
+from flask_app import CHAIN
+from flask_app.models.model_block import Block
 from flask_app.models.model_merkle_tree import MerkleTree
 from flask_app.models.model_blockchain import Blockchain
-from flask_app.models.model_block import Block
+from datetime import datetime
+import threading
+import jsonpickle
 
-CHAIN=Blockchain()
+
+# MINER=Miner()
+
 
 class Miner:
     def __init__(self):
@@ -32,6 +36,8 @@ class Miner:
             self.block.txns=self.pending_txns
             self.block.own_hash=self.block.hash_block()
             CHAIN.add_block(self.block)
+            frozen=jsonpickle.encode(CHAIN)
+            Blockchain.update_backup({"blockchain":frozen})
             
             print("*****************************")
             print("PoW Satisfied at "+str(datetime.now()))

@@ -1,10 +1,8 @@
-from flask_app import MINER
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from datetime import datetime
 import re
 
-from flask_app.models.model_miner import CHAIN
 from flask_app.models.model_user import User
 
 
@@ -101,12 +99,44 @@ class Transaction:
     @staticmethod
     def validate_transaction(data):
         is_valid=True
-        receiver=User.get_user_by_email({"email": request.form['recipient']})
-        sender=User.get_one({"id":session['uuid']})
 
-        pending_sent_amount=MINER.get_pending_sent_amount(sender.email)
-        balance=CHAIN.get_balance_by_user(sender.email)-pending_sent_amount
-        if balance >= float(data['amount']):
+        # Check Amount Field
+        if not data['amount'] or data['amount'] == "":
+            flash("Please enter an amount to send.", "err_amount")
+            is_valid=False
+
+        elif data['balance'] < float(data['amount']):
             flash("You do not have that much to send.", "err_amount")
             is_valid=False
+        
+        # Check Recipient Field
+        receiver=User.get_user_by_email({"email": data['receiver']})
+        if not receiver:
+            flash("Please enter a valid email.", "err_receiver")
+            is_valid=False
+        
+        # Check Message Field
+        if len(data['message'])>120:
+            flash("Message cannot be more than 120 characters.", "err_message")
+            is_valid=False
+        
+        return is_valid
+    
+    @staticmethod
+    def validate_deposit(data):
+        is_valid=True
+
+        # Check Amount Field
+        if not data['amount']:
+            flash("Please enter an amount to deposit.", "err_amount")
+            is_valid=False
+        elif float(data['amount']) <= 0:
+            flash("Please enter an amount greater than zero.", "err_amount")
+            is_valid=False
+        
+        # Check Account Field
+        if not data['bank_account'] or data['bank_account'] == "":
+            flash("Please choose an account.", "err_account")
+            is_valid=False
+        
         return is_valid

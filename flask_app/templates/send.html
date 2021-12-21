@@ -34,8 +34,23 @@
             <h2>Send Money!</h2>
             <form action="/transactions/create" method="post">
                 <input type="number" name="amount" id="amount" placeholder="0.00" step="0.01" class="form-control border border-dark mt-4">
-                <input type="email" name="recipient" id="recipient" placeholder="Recipient's Email" class="form-control border border-dark mt-4">
+                {% for message in get_flashed_messages(category_filter=["err_amount"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
+                <input type="email" name="receiver" id="receiver" placeholder="Recipient's Email" class="form-control border border-dark mt-4">
+                {% for message in get_flashed_messages(category_filter=["err_receiver"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
                 <textarea name="message" id="message" cols="25" rows="4" placeholder="Message (Max 120 characters)"" class="form-control border border-dark mt-4"></textarea>
+                {% for message in get_flashed_messages(category_filter=["err_message"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
                 <input type="submit" value="Send" class="btn btn-warning btn-shadow border-2 border-dark col-8 offset-2 mt-4">
             </form>
         </main>

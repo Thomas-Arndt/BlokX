@@ -1,5 +1,8 @@
+from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.models.model_block import Block
 from datetime import datetime
+
+DATABASE='blokx_schema'
 
 class Blockchain:
     def __init__(self):
@@ -41,3 +44,23 @@ class Blockchain:
                     if txn.sender == user or txn.receiver == user:
                         all_txns_by_user.append(txn)
         return all_txns_by_user
+
+    @classmethod
+    def get_backup(cls):
+        query="SELECT * FROM blockchain_backup;"
+        results = connectToMySQL(DATABASE).query_db(query)
+        if results:
+            return results[0]
+        return False
+
+    @classmethod
+    def create_backup(cls, chain):
+        query="INSERT INTO blockchain_backup (blockchain) VALUES (%(chain)s);"
+        return connectToMySQL(DATABASE).query_db(query, {"chain":chain})
+    
+    @classmethod
+    def update_backup(cls, data):
+        query="UPDATE blockchain_backup SET blockchain=%(blockchain)s WHERE id=3;"
+        return connectToMySQL(DATABASE).query_db(query, data, show_query=False)
+
+

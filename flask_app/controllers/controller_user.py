@@ -1,11 +1,11 @@
-from flask_app import app, MINER
+from flask_app import app, CHAIN
 from flask import render_template, redirect, session, request, flash
 from flask_bcrypt import Bcrypt
 
+from flask_app.config._miner_init import MINER
 from flask_app.models.model_user import User
 from flask_app.models.model_transaction import Transaction
 
-from flask_app.models.model_miner import CHAIN
 
 bcrypt=Bcrypt(app)
 
@@ -111,6 +111,6 @@ def users_settings():
 def users_update(id):
     return redirect('/')
 
-@app.route('/users/<int:id>/delete')
-def users_delete(id):
-    return redirect('/')
+# @app.route('/users/<int:id>/delete')
+# def users_delete(id):
+#     return redirect('/')

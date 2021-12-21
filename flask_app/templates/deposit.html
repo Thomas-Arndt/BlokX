@@ -34,11 +34,21 @@
             <h2>Deposit Money!</h2>
             <form action="/deposit/create" method="post">
                 <input type="number" name="amount" id="amount" placeholder="0.00" step="0.01" class="form-control border border-dark mt-4">
+                {% for message in get_flashed_messages(category_filter=["err_amount"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
                 <select name="bank_account" id="bank_account" class="form-control border border-dark mt-3">
                     <option value="">--Choose Account--</option>
                     <option value="Checking">Checking Account</option>
                     <option value="Savings">Savings Account</option>
                 </select>
+                {% for message in get_flashed_messages(category_filter=["err_account"]) %}
+                    {% if message: %}
+                        <p class="alert alert-danger">{{ message }}</p>
+                    {% endif %}
+                {% endfor %}
                 <input type="submit" value="Deposit" class="btn btn-warning btn-shadow border-2 border-dark col-6 offset-3 mt-4">
             </form>
         </main>
