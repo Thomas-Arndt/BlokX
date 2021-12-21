@@ -63,7 +63,7 @@ class Blockchain:
     # U
     @classmethod
     def update_backup(cls, data):
-        query="UPDATE blockchain_backup SET blockchain=%(blockchain)s WHERE id=3;"
+        query="UPDATE blockchain_backup SET blockchain=%(blockchain)s WHERE id=1;"
         return connectToMySQL(DATABASE).query_db(query, data, show_query=False)
 
 

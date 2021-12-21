@@ -91,11 +91,15 @@ def users_history():
     pending_sent_amount=MINER.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
     verified_txns=CHAIN.get_transactions_by_user(user.email)
-    print(verified_txns[0])
+    verified_txns.reverse()
+    pending_txns=MINER.pending_txns
+    pending_txns.reverse()
+    # print(verified_txns[0])
+    # print(MINER.pending_txns)
     # sent_amount=Transaction.get_sum_of_transaction_as_sender({"id":session['uuid']})
     # received_amount=Transaction.get_sum_of_transaction_as_receiver({"id":session['uuid']})
     # balance=received_amount['received_amount']-sent_amount['sent_amount']
-    return render_template("transactions.html", user=user, balance=balance, verified_txns=verified_txns)
+    return render_template("transactions.html", user=user, balance=balance, verified_txns=verified_txns, pending_txns=pending_txns)
 
 @app.route('/settings')
 def users_settings():
@@ -107,8 +111,8 @@ def users_settings():
     # balance=received_amount['received_amount']-sent_amount['sent_amount']
     return render_template("account_settings.html", user=user, balance=balance)
 
-@app.route('/users/<int:id>/update', methods=['POST'])
-def users_update(id):
+@app.route('/users/update/password', methods=['POST'])
+def users_update():
     return redirect('/')
 
 # @app.route('/users/<int:id>/delete')

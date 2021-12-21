@@ -33,24 +33,24 @@ class Transaction:
         return serialized_txn
     
     # C
-    @classmethod
-    def create_transaction(cls, data:dict) -> int:
-        query="INSERT INTO transactions (sender_id, receiver_id, amount, message) VALUES (%(sender_id)s, %(receiver_id)s, %(amount)s, %(message)s);"
-        return connectToMySQL(DATABASE).query_db(query, data)
+    # @classmethod
+    # def create_transaction(cls, data:dict) -> int:
+    #     query="INSERT INTO transactions (sender_id, receiver_id, amount, message) VALUES (%(sender_id)s, %(receiver_id)s, %(amount)s, %(message)s);"
+    #     return connectToMySQL(DATABASE).query_db(query, data)
     
-    @classmethod
-    def create_deposit(cls, data:dict) -> int:
-        query="INSERT INTO transactions (sender_id, receiver_id, amount, message) VALUES (%(sender_id)s, %(receiver_id)s, %(amount)s, %(message)s);"
-        return connectToMySQL(DATABASE).query_db(query, data)
+    # @classmethod
+    # def create_deposit(cls, data:dict) -> int:
+    #     query="INSERT INTO transactions (sender_id, receiver_id, amount, message) VALUES (%(sender_id)s, %(receiver_id)s, %(amount)s, %(message)s);"
+    #     return connectToMySQL(DATABASE).query_db(query, data)
 
-    # R
-    @classmethod
-    def get_one(cls, data:dict) -> list:
-        query="SELECT * FROM transactions WHERE id=%(id)s;"
-        results = connectToMySQL(DATABASE).query_db(query, data)
-        if results:
-            return cls(results[0])
-        return False
+    # # R
+    # @classmethod
+    # def get_one(cls, data:dict) -> list:
+    #     query="SELECT * FROM transactions WHERE id=%(id)s;"
+    #     results = connectToMySQL(DATABASE).query_db(query, data)
+    #     if results:
+    #         return cls(results[0])
+    #     return False
 
     @classmethod
     def get_all(cls) -> list:
@@ -84,16 +84,16 @@ class Transaction:
         return False
 
     # U
-    @classmethod
-    def update_one(cls, data:dict) -> None:
-        query="UPDATE transactions SET sender_id=%(sender_id)s, receiver_id=%(receiver_id)s, amount=%(amount)s, message=%(message)s WHERE id=%(id)s;"
-        return connectToMySQL(DATABASE).query_db(query, data)
+    # @classmethod
+    # def update_one(cls, data:dict) -> None:
+    #     query="UPDATE transactions SET sender_id=%(sender_id)s, receiver_id=%(receiver_id)s, amount=%(amount)s, message=%(message)s WHERE id=%(id)s;"
+    #     return connectToMySQL(DATABASE).query_db(query, data)
 
-    # D
-    @classmethod
-    def delete_one(cls, data:dict) -> None:
-        query="DELETE FROM transactions WHERE id=%(id)s;"
-        return connectToMySQL(DATABASE).query_db(query, data)
+    # # D
+    # @classmethod
+    # def delete_one(cls, data:dict) -> None:
+    #     query="DELETE FROM transactions WHERE id=%(id)s;"
+    #     return connectToMySQL(DATABASE).query_db(query, data)
 
 
     @staticmethod

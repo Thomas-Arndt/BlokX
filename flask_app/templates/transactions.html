@@ -35,26 +35,52 @@
         <main class="content d-flex flex-column align-items-center">
             <h2 class="text-center transaction-history-title py-3">Transaction History</h2>
             <div class="transaction-history overflow-y px-5">
-                {% for txn in verified_txns %}
-                    {% if txn.sender == "Deposit" %}
-                        <div class="transaction-block">
-                            <p class="mb-1"><strong>You</strong> deposited <strong>${{ txn.amount }}</strong> from <strong>{{ txn.message }}</strong>.</p>
-                            <p class="transaction-date">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
-                        </div>
-                    {% elif txn.sender == user.email %}
-                        <div class="transaction-block">
-                            <p class="mb-1"><strong>You</strong> sent <strong>${{ txn.amount }}</strong> to <strong>{{ txn.receiver }}</strong>.</p>
-                            <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
-                            <p>{{ txn.message }}</p>
-                        </div>        
-                    {% elif txn.receiver == user.email %}
-                        <div class="transaction-block">
-                            <p class="mb-1"><strong>{{ txn.sender }}</strong> sent <strong>You</strong> <strong>${{ txn.amount }}</strong>.</p>
-                            <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
-                            <p>{{ txn.message }}</p>
-                        </div>        
-                    {% endif %}
-                {% endfor %}
+                {% if pending_txns %}    
+                    <h5 class="text-center text-danger text-decoration-underline">Unconfirmed Transations</h5>
+                    {% for txn in pending_txns %}
+                        {% if txn.sender == "Deposit" %}
+                            <div class="transaction-block">
+                                <p class="mb-1"><strong>You</strong> deposited <strong>${{ txn.amount }}</strong> from <strong>{{ txn.message }}</strong>.</p>
+                                <p class="transaction-date">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                            </div>
+                        {% elif txn.sender == user.email %}
+                            <div class="transaction-block">
+                                <p class="mb-1"><strong>You</strong> sent <strong>${{ txn.amount }}</strong> to <strong>{{ txn.receiver }}</strong>.</p>
+                                <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                                <p>{{ txn.message }}</p>
+                            </div>        
+                        {% elif txn.receiver == user.email %}
+                            <div class="transaction-block">
+                                <p class="mb-1"><strong>{{ txn.sender }}</strong> sent <strong>You</strong> <strong>${{ txn.amount }}</strong>.</p>
+                                <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                                <p>{{ txn.message }}</p>
+                            </div>        
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <h5 class="text-center text-decoration-underline text-success">Confirmed Transactions</h5>
+                {% if verified_txns %}    
+                    {% for txn in verified_txns %}
+                        {% if txn.sender == "Deposit" %}
+                            <div class="transaction-block">
+                                <p class="mb-1"><strong>You</strong> deposited <strong>${{ txn.amount }}</strong> from <strong>{{ txn.message }}</strong>.</p>
+                                <p class="transaction-date">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                            </div>
+                        {% elif txn.sender == user.email %}
+                            <div class="transaction-block">
+                                <p class="mb-1"><strong>You</strong> sent <strong>${{ txn.amount }}</strong> to <strong>{{ txn.receiver }}</strong>.</p>
+                                <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                                <p>{{ txn.message }}</p>
+                            </div>        
+                        {% elif txn.receiver == user.email %}
+                            <div class="transaction-block">
+                                <p class="mb-1"><strong>{{ txn.sender }}</strong> sent <strong>You</strong> <strong>${{ txn.amount }}</strong>.</p>
+                                <p class="transaction-date mb-1">{{ txn.timestamp.strftime('%b %d, %Y') }}</p>
+                                <p>{{ txn.message }}</p>
+                            </div>        
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
         </main>
     </div>

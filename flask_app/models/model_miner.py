@@ -22,8 +22,8 @@ class Miner:
         else:
             # Get txn backup
             frozen=Miner.get_txn_backup()
-            print("FROZEN*******************")
-            print(frozen)
+            # print("FROZEN*******************")
+            # print(frozen)
             self.pending_txns=jsonpickle.decode(frozen['txn'])
 
         print("Miner instantiated!")
@@ -75,7 +75,7 @@ class Miner:
 
         frozen=jsonpickle.encode(self.pending_txns)
         Miner.update_txn_backup({"pending_txns":frozen})
-        
+
         self.block.merkle_root=MerkleTree(self.pending_txns).merkle_root()
         self.block.nonce=0
 

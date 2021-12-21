@@ -28,10 +28,11 @@ def transactions_create():
     }
     if not Transaction.validate_transaction(data):
         return redirect('/send')
+        
     receiver=User.get_user_by_email({"email": request.form['receiver']})
     data['receiver']=receiver.email
     MINER.add_new_transaction(Transaction(data))
-    return redirect('/send')
+    return redirect('/history')
 
 @app.route('/deposit/create', methods=['POST'])
 def deposit_create():
@@ -48,7 +49,7 @@ def deposit_create():
         "message":request.form['bank_account']
     }
     MINER.add_new_transaction(Transaction(data))
-    return redirect('/deposit')
+    return redirect('/history')
 
 # @app.route('/transactions/<int:id>')
 # def transactions_show(id):

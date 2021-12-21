@@ -116,7 +116,7 @@
 }
 
 .transaction-history{
-    height: 100vh;
+    height: calc(100vh - 68px);
 }
 
 .transaction-history-title{
@@ -127,7 +127,7 @@
 
 .transaction-block{
     max-width: 500px;
-    padding-top:15px;
+    margin-bottom:15px;
     border-bottom: 1px solid black;
 }
 
