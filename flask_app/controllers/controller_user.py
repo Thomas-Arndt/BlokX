@@ -87,7 +87,9 @@ def users_history():
     balance="{:.2f}".format(balance)
     verified_txns=CHAIN.get_transactions_by_user(user.email)
     verified_txns.reverse()
-    pending_txns=MINER.pending_txns
+    pending_txns=[]
+    for txn in MINER.pending_txns:
+        pending_txns.append(txn)
     pending_txns.reverse()
     has_pending_txns = False
     for txn in pending_txns:
