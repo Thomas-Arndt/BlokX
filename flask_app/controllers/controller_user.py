@@ -88,7 +88,7 @@ def users_history():
     verified_txns=CHAIN.get_transactions_by_user(user.email)
     verified_txns.reverse()
     pending_txns=[]
-    for txn in MINER.pending_txns:
+    for txn in MINER.get_pending_txns():
         pending_txns.append(txn)
     pending_txns.reverse()
     has_pending_txns = False
