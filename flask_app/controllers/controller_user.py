@@ -26,11 +26,11 @@ def users_login():
     user_in_db = User.get_user_by_email(data)
 
     if not user_in_db:
-        flash("Invalid Email/Pasword", "err_login")
+        flash("Invalid Email/Password", "err_login")
         return redirect('/')
     
     if not bcrypt.check_password_hash(user_in_db.password, data['password']):
-        flash("Invalid Email/Pasword", "err_login")
+        flash("Invalid Email/Password", "err_login")
         return redirect('/')
     
     session['uuid'] = user_in_db.id
