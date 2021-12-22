@@ -78,6 +78,9 @@ class Miner:
 
         self.block.merkle_root=MerkleTree(self.pending_txns).merkle_root()
         self.block.nonce=0
+    
+    def get_pending_txns(self):
+        return self.pending_txns
 
     def get_pending_sent_amount(self, user=None):
         sent_amount=0
