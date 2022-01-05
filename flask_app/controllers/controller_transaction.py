@@ -1,7 +1,9 @@
-from flask_app import app, CHAIN
+from flask_app import app
 from flask import render_template, redirect, session, request, flash
 
 from flask_app.config._miner_init import MINER
+from flask_app.config._blockchain_init import CHAIN
+
 from flask_app.models.model_transaction import Transaction
 from flask_app.models.model_user import User
 
@@ -16,7 +18,7 @@ def transactions_create():
     # print(request.form)
     sender=User.get_one({"id":session['uuid']})
     
-    pending_sent_amount=MINER.get_pending_sent_amount(sender.email)
+    pending_sent_amount=CHAIN.get_pending_sent_amount(sender.email)
     balance=CHAIN.get_balance_by_user(sender.email)-pending_sent_amount
     data={
         "sender":sender.email,
@@ -31,7 +33,9 @@ def transactions_create():
         
     receiver=User.get_user_by_email({"email": request.form['receiver']})
     data['receiver']=receiver.email
-    MINER.add_new_transaction(Transaction(data))
+    CHAIN.add_new_transaction(Transaction(data))
+    MINER.set_merkle_root()
+    MINER.reset_nonce()
     return redirect('/history')
 
 @app.route('/deposit/create', methods=['POST'])
@@ -48,7 +52,9 @@ def deposit_create():
         "amount":request.form['amount'],
         "message":request.form['bank_account']
     }
-    MINER.add_new_transaction(Transaction(data))
+    CHAIN.add_new_transaction(Transaction(data))
+    MINER.set_merkle_root()
+    MINER.reset_nonce()
     return redirect('/history')
 
 # @app.route('/transactions/<int:id>')
