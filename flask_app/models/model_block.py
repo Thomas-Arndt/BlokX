@@ -9,7 +9,7 @@ class Block:
         self.prev_hash=prev_hash
         self.difficulty=difficulty
         self.own_hash=""
-        self.txns=""
+        self.txns=[]
 
     def hash_block(self):
         return hashlib.sha256(self.serialize_block_header().encode('utf-8')).hexdigest()

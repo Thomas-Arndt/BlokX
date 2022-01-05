@@ -1,8 +1,8 @@
-from flask_app import app, CHAIN
+from flask_app import app
+from flask_app.config._blockchain_init import CHAIN
 from flask import render_template, redirect, session, request, flash
 from flask_bcrypt import Bcrypt
 
-from flask_app.config._miner_init import MINER
 from flask_app.models.model_user import User
 from flask_app.models.model_transaction import Transaction
 
@@ -58,7 +58,8 @@ def users_create():
 @app.route('/dashboard')
 def users_dashboard():
     user=User.get_one({"id":session['uuid']})
-    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    pending_sent_amount=CHAIN.get_pending_sent_amount(user.email)
+    print(pending_sent_amount)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
     balance="{:.2f}".format(balance)
     return render_template("welcome.html", user=user, balance=balance)
@@ -66,7 +67,7 @@ def users_dashboard():
 @app.route('/send')
 def users_send():
     user=User.get_one({"id":session['uuid']})
-    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    pending_sent_amount=CHAIN.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
     balance="{:.2f}".format(balance)
     return render_template("send.html", user=user, balance=balance)
@@ -74,7 +75,7 @@ def users_send():
 @app.route('/deposit')
 def users_deposit():
     user=User.get_one({"id":session['uuid']})
-    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    pending_sent_amount=CHAIN.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
     balance="{:.2f}".format(balance)
     return render_template("deposit.html", user=user, balance=balance)
@@ -82,13 +83,13 @@ def users_deposit():
 @app.route('/history')
 def users_history():
     user=User.get_one({"id":session['uuid']})
-    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    pending_sent_amount=CHAIN.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
     balance="{:.2f}".format(balance)
     verified_txns=CHAIN.get_transactions_by_user(user.email)
     verified_txns.reverse()
     pending_txns=[]
-    for txn in MINER.get_pending_txns():
+    for txn in CHAIN.pending_txns:
         pending_txns.append(txn)
     pending_txns.reverse()
     has_pending_txns = False
@@ -100,7 +101,7 @@ def users_history():
 @app.route('/settings')
 def users_settings():
     user=User.get_one({"id":session['uuid']})
-    pending_sent_amount=MINER.get_pending_sent_amount(user.email)
+    pending_sent_amount=CHAIN.get_pending_sent_amount(user.email)
     balance=CHAIN.get_balance_by_user(user.email)-pending_sent_amount
     balance="{:.2f}".format(balance)
     return render_template("account_settings.html", user=user, balance=balance)

@@ -4,9 +4,6 @@ from datetime import datetime
 import random
 import json
 
-from flask_app.config._miner_init import MINER
-from flask_app.models.model_transaction import Transaction
-
 @app.route('/')
 def index():
     return render_template("login.html")
