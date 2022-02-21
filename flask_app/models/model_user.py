@@ -75,78 +75,185 @@ class User:
 
     @staticmethod
     def validate_registration(data):
-        is_valid=True
+        validation_results = {
+            is_valid: True,
+            errors: {}
+        }
 
         # Check First Name Field
         if not data['first_name'] or len(data['first_name']) < 2:
-            flash("Please enter your first name.", "err_first_name")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "firstName" in validation_results.errors:
+                validation_results.errors.firstName = []
+            validation_results.errors.firstName.append("First name is required.")
         
         # Check Last Name Field
         if not data['last_name'] or len(data['last_name']) < 2:
-            flash("Please enter your last name.", "err_last_name")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "lastName" in validation_results.errors:
+                validation_results.errors.lastName = []
+            validation_results.errors.lastName.append("Last name is required.")
         
         # Check Email Field
         if not data['email'] or not EMAIL_REGEX.match(data['email']):
-            flash("Please enter a valid email address.", "err_email")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "email" in validation_results.errors:
+                validation_results.errors.email = []
+            validation_results.errors.email.append("Email is required.")
 
         query="SELECT email from users;"
         results = connectToMySQL(DATABASE).query_db(query)
         if results:
             for email in results:
                 if data['email'] == email['email']:
-                    flash("Please enter a valid email.", "err_email")
-                    is_valid=False
+                    validation_results.is_valid=False
+                    if not "email" in validation_results.errors:
+                        validation_results.errors.email = []
+                    validation_results.errors.email.append("Invalid email.")
 
         # Check Password Field
         if not data['password']:
-            flash("Please enter a password.", "err_password")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "password" in validation_results.errors:
+                validation_results.errors.password = []
+            validation_results.errors.password.append("Password is required.")
         
         elif not PASSWORD_REGEX.match(data['password']):
-            flash("Password must be at least 8 letters, and must include at least one lowercase letter, one uppercase letter, and one number.", "err_password")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "password" in validation_results.errors:
+                validation_results.errors.password = []
+            validation_results.errors.password.append("Password must be at least 8 letters, and must include at least one lowercase letter, one uppercase letter, and one number.")
 
         # Check Confirm Password Field
         if not data['password_confirm']:
-            flash("Please retype your password.", "err_password_confirm")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "password_confirm" in validation_results.errors:
+                validation_results.errors.password_confirm = []
+            validation_results.errors.password_confirm.append("Please confirm your password.")
+            
 
         elif data['password'] != data['password_confirm']:
-            flash("Passwords do not match.", "err_password_confirm")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "password_confirm" in validation_results.errors:
+                validation_results.errors.password_confirm = []
+            validation_results.errors.password_confirm.append("Passwords do not match.")
 
-        return is_valid
+        return validation_results
+    
+    # @staticmethod
+    # def validate_registration(data):
+    #     is_valid=True
+
+    #     # Check First Name Field
+    #     if not data['first_name'] or len(data['first_name']) < 2:
+    #         flash("Please enter your first name.", "err_first_name")
+    #         is_valid=False
+        
+    #     # Check Last Name Field
+    #     if not data['last_name'] or len(data['last_name']) < 2:
+    #         flash("Please enter your last name.", "err_last_name")
+    #         is_valid=False
+        
+    #     # Check Email Field
+    #     if not data['email'] or not EMAIL_REGEX.match(data['email']):
+    #         flash("Please enter a valid email address.", "err_email")
+    #         is_valid=False
+
+    #     query="SELECT email from users;"
+    #     results = connectToMySQL(DATABASE).query_db(query)
+    #     if results:
+    #         for email in results:
+    #             if data['email'] == email['email']:
+    #                 flash("Please enter a valid email.", "err_email")
+    #                 is_valid=False
+
+    #     # Check Password Field
+    #     if not data['password']:
+    #         flash("Please enter a password.", "err_password")
+    #         is_valid=False
+        
+    #     elif not PASSWORD_REGEX.match(data['password']):
+    #         flash("Password must be at least 8 letters, and must include at least one lowercase letter, one uppercase letter, and one number.", "err_password")
+    #         is_valid=False
+
+    #     # Check Confirm Password Field
+    #     if not data['password_confirm']:
+    #         flash("Please retype your password.", "err_password_confirm")
+    #         is_valid=False
+
+    #     elif data['password'] != data['password_confirm']:
+    #         flash("Passwords do not match.", "err_password_confirm")
+    #         is_valid=False
+
+    #     return is_valid
     
     @staticmethod
     def validate_login(data):
-        is_valid=True
+        validation_results = {
+            is_valid: True,
+            errors: {}
+        }
+        
         # Check Email Field
         if not data['email']:
-            flash("Please enter your email.", "err_email")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "email" in validation_results.errors:
+                validation_results.errors.email = []
+            validation_results.errors.email.append("Email is required.")
 
         elif not EMAIL_REGEX.match(data['email']):
-            flash("Please enter a valid email.", "err_email")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "email" in validation_results.errors:
+                validation_results.errors.email = []
+            validation_results.errors.email.append("Please enter a valid email.")
         
         # Check if email is in database
         else:
             user_in_db = User.get_user_by_email(data)
             if not user_in_db:
-                flash("Please enter a valid email.", "err_email")
-                is_valid=False
+                validation_results.is_valid=False
+                if not "email" in validation_results.errors:
+                    validation_results.errors.email = []
+                validation_results.errors.email.append("Please enter a valid email.")
         
 
         # Check password Field
         if not data['password']:
-            flash("Please enter a valid password.", "err_login")
-            is_valid=False
+            validation_results.is_valid=False
+            if not "password" in validation_results.errors:
+                validation_results.errors.password = []
+            validation_results.errors.password.append("Please enter a valid password.")
 
 
-        return is_valid
+        return validation_results
+    
+    # @staticmethod
+    # def validate_login(data):
+    #     is_valid=True
+    #     # Check Email Field
+    #     if not data['email']:
+    #         flash("Please enter your email.", "err_email")
+    #         is_valid=False
+
+    #     elif not EMAIL_REGEX.match(data['email']):
+    #         flash("Please enter a valid email.", "err_email")
+    #         is_valid=False
+        
+    #     # Check if email is in database
+    #     else:
+    #         user_in_db = User.get_user_by_email(data)
+    #         if not user_in_db:
+    #             flash("Please enter a valid email.", "err_email")
+    #             is_valid=False
+        
+
+    #     # Check password Field
+    #     if not data['password']:
+    #         flash("Please enter a valid password.", "err_login")
+    #         is_valid=False
+
+
+    #     return is_valid
     
     @staticmethod
     def validate_password_change(data):
