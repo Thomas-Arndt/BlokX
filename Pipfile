@@ -8,6 +8,9 @@ pymysql = "*"
 flask = "*"
 flask-bcrypt = "*"
 jsonpickle = "*"
+flask-cors = "*"
+flask-jwt-extended = "*"
+flask-restful = "*"
 
 [dev-packages]
 
